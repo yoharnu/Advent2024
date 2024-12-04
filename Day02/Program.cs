@@ -12,17 +12,25 @@ static void ReadFile(StreamReader inputFile)
 {
     string? line;
     var safeCountOne = 0;
+    var safeCountTwo = 0;
     while ((line = inputFile.ReadLine()) != null)
     {
         List<int> report = line.Split().Select(x => int.Parse(x)).ToList();
 
-        var safeOne = PartOne(report);
+        bool safeOne = PartOne(report);
+        bool safeTwo;
 
         if (safeOne)
-            safeCountOne++;
+            safeTwo = true;
+        else
+            safeTwo = PartTwo(report);
+
+        if (safeOne) safeCountOne++;
+        if (safeTwo) safeCountTwo++;
     }
 
     Console.WriteLine("Part 1: {0}", safeCountOne);
+    Console.WriteLine("Part 1: {0}", safeCountTwo);
 }
 
 static bool PartOne(List<int> report)
@@ -52,4 +60,16 @@ static bool PartOne(List<int> report)
         safe = false;
 
     return safe;
+}
+
+static bool PartTwo(List<int> report)
+{
+    for (int i = 0; i < report.Count; i++)
+    {
+        List<int> dampenedReport = new List<int>(report);
+        dampenedReport.RemoveAt(i);
+        if (PartOne(dampenedReport))
+            return true;
+    }
+    return false;
 }
