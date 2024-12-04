@@ -1,22 +1,13 @@
-﻿List<int> listA = [];
-List<int> listB = [];
-var sr = new StreamReader(new FileStream("./input/input.txt", FileMode.Open));
+﻿var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open));
+Console.WriteLine("Sample Solution:");
+ReadFile(sampleFile);
 
-string? line;
-while ((line = sr.ReadLine()) != null)
-{
-    var split = line.Split();
-    listA.Add(int.Parse(split.First()));
-    listB.Add(int.Parse(split.Last()));
-}
-listA.Sort();
-listB.Sort();
+Console.WriteLine();
 
-int solutionOne = PartOne(listA, listB);
-int solutionTwo = PartTwo(listA, listB);
+var inputFile = new StreamReader(new FileStream("./input/input.txt", FileMode.Open));
+Console.WriteLine("Final Solution:");
+ReadFile(inputFile);
 
-Console.WriteLine("Part 1: {0}", solutionOne);
-Console.WriteLine("Part 2: {0}", solutionTwo);
 
 static int PartOne(List<int> listA, List<int> listB)
 {
@@ -38,4 +29,26 @@ static int PartTwo(List<int> listA, List<int> listB)
             sum += a * mapB[a];
     }
     return sum;
+}
+
+static void ReadFile(StreamReader inputFile)
+{
+    List<int> listA = [];
+    List<int> listB = [];
+
+    string? line;
+    while ((line = inputFile.ReadLine()) != null)
+    {
+        var split = line.Split();
+        listA.Add(int.Parse(split.First()));
+        listB.Add(int.Parse(split.Last()));
+    }
+    listA.Sort();
+    listB.Sort();
+
+    int solutionOne = PartOne(listA, listB);
+    Console.WriteLine("Part 1: {0}", solutionOne);
+
+    int solutionTwo = PartTwo(listA, listB);
+    Console.WriteLine("Part 2: {0}", solutionTwo);
 }
