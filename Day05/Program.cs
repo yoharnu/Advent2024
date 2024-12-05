@@ -12,12 +12,6 @@ using (var inputFile = new StreamReader(new FileStream("./input/input.txt", File
 
 static void ReadFile(StreamReader inputFile)
 {
-    var solutionOne = PartOne(inputFile);
-    Console.WriteLine("Part 1: {0}", solutionOne);
-}
-
-static int PartOne(StreamReader inputFile)
-{
     string? line;
     List<string> rulesLines = new();
     while ((line = inputFile.ReadLine()) != null)
@@ -29,8 +23,25 @@ static int PartOne(StreamReader inputFile)
     }
     var rules = rulesLines.Select(x => x.Split('|').Select(y => int.Parse(y)).ToArray()).ToList();
     var updates = Helper.ReadAllLines(inputFile).Select(x => x.Split(',').Select(y => int.Parse(y)).ToList()).ToList();
-    //var sortedUpdates = updates.Select(x => SortPages(x, rules)).ToList();
+
+    var solutionOne = PartOne(updates, rules);
+    Console.WriteLine("Part 1: {0}", solutionOne);
+
+    var solutionTwo = PartTwo(updates, rules);
+    Console.WriteLine("Part 2: {0}", solutionTwo);
+}
+
+static int PartOne(List<List<int>> updates, List<int[]> rules)
+{
     var sortedUpdates = updates.Where(x => IsUpdateSorted(x, rules));
+    var middlePages = sortedUpdates.Select(x => GetMiddlePage(x));
+    return middlePages.Sum();
+}
+
+static int PartTwo(List<List<int>> updates, List<int[]> rules)
+{
+    var unsortedUpdates = updates.Where(x => !IsUpdateSorted(x, rules));
+    var sortedUpdates = unsortedUpdates.Select(x => SortPages(x, rules));
     var middlePages = sortedUpdates.Select(x => GetMiddlePage(x));
     return middlePages.Sum();
 }
