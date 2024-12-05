@@ -21,7 +21,7 @@ static void ReadFile(StreamReader inputFile)
 static int PartOne(List<List<char>> wordSearch)
 {
     var count = 0;
-    count += CountHorizontal(wordSearch, "XMAS");
+    count += CountAllDirections(wordSearch, "XMAS");
     return count;
 }
 
@@ -36,17 +36,65 @@ static List<List<char>> GetWordSearch(StreamReader inputFile)
     return wordSearch;
 }
 
-static int CountHorizontal(List<List<char>> wordSearch, string word)
+static int CountAllDirections(List<List<char>> wordSearch, string word)
 {
     var count = 0;
-    Regex rx = new(word + "|" + word.Reverse().ToString());
-    foreach (List<char> row in wordSearch)
-    {
-        if (row.Any())
+    for (int i = 0; i < wordSearch.Count; i++)
+        for (int j = 0; j < wordSearch[i].Count; j++)
         {
-            var rowString = new string(row.ToArray());
-            count += rx.Matches(rowString).Count;
+            if (!wordSearch[i][j].Equals(word[0]))
+                continue;
+
+            string right = wordSearch[i][j].ToString();
+            string left = wordSearch[i][j].ToString();
+            string up = wordSearch[i][j].ToString();
+            string down = wordSearch[i][j].ToString();
+            string upRight = wordSearch[i][j].ToString();
+            string downRight = wordSearch[i][j].ToString();
+            string upLeft = wordSearch[i][j].ToString();
+            string downLeft = wordSearch[i][j].ToString();
+
+            for (int k = 1; k < word.Length; k++)
+            {
+                if (j + k < wordSearch[i].Count)
+                {
+                    right += wordSearch[i][j + k];
+                    if (i - k >= 0)
+                        upRight += wordSearch[i - k][j + k];
+                    if (i + k < wordSearch.Count)
+                        downRight += wordSearch[i + k][j + k];
+                }
+                if (j - k >= 0)
+                {
+                    left += wordSearch[i][j - k];
+                    if (i - k >= 0)
+                        upLeft += wordSearch[i - k][j - k];
+                    if (i + k < wordSearch.Count)
+                        downLeft += wordSearch[i + k][j - k];
+                }
+                if (i - k >= 0)
+                    up += wordSearch[i - k][j];
+
+                if (i + k < wordSearch.Count)
+                    down += wordSearch[i + k][j];
+            }
+
+            if (word.Equals(right))
+                count++;
+            if (word.Equals(left))
+                count++;
+            if (word.Equals(up))
+                count++;
+            if (word.Equals(down))
+                count++;
+            if (word.Equals(upRight))
+                count++;
+            if (word.Equals(downRight))
+                count++;
+            if (word.Equals(upLeft))
+                count++;
+            if (word.Equals(downLeft))
+                count++;
         }
-    }
     return count;
 }
