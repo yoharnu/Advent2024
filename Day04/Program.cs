@@ -10,5 +10,26 @@ ReadFile(inputFile);
 
 static void ReadFile(StreamReader inputFile)
 {
+    List<List<char>> wordSearch = GetWordSearch(inputFile);
+    var countOne = PartOne(wordSearch);
 
+    Console.WriteLine("Part 1: {0}", countOne);
+}
+
+static int PartOne(List<List<char>> wordSearch)
+{
+    var count = 0;
+
+    return count;
+}
+
+static List<List<char>> GetWordSearch(StreamReader inputFile)
+{
+    List<List<char>> wordSearch = new();
+    string? line;
+    while ((line = inputFile.ReadLine()) != null)
+    {
+        wordSearch.Add(line.ToList());
+    }
+    return wordSearch;
 }
