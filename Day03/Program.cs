@@ -1,15 +1,15 @@
 ﻿using System.Text.RegularExpressions;
 
-var sampleFile1 = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open));
-var sampleFile2 = new StreamReader(new FileStream("./input/sample2.txt", FileMode.Open));
 Console.WriteLine("Sample Solution:");
-ReadFile(sampleFile1, sampleFile2);
+using (var sampleFile1 = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open)))
+using (var sampleFile2 = new StreamReader(new FileStream("./input/sample2.txt", FileMode.Open)))
+    ReadFile(sampleFile1, sampleFile2);
 
 Console.WriteLine();
 
-var inputFile = new StreamReader(new FileStream("./input/input.txt", FileMode.Open));
 Console.WriteLine("Final Solution:");
-ReadFile(inputFile, inputFile);
+using (var inputFile = new StreamReader(new FileStream("./input/input.txt", FileMode.Open)))
+    ReadFile(inputFile, inputFile);
 
 static void ReadFile(StreamReader partOneInput, StreamReader partTwoInput)
 {
