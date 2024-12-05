@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Business\Business.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="input\input.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

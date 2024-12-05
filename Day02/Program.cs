@@ -1,4 +1,5 @@
-﻿var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open));
+﻿using Business;
+
 Console.WriteLine("Sample Solution:");
 ReadFile(sampleFile);
 
@@ -12,7 +13,8 @@ static void ReadFile(StreamReader inputFile)
 {
     string? line;
     int[] safeCount = [0, 0];
-    while ((line = inputFile.ReadLine()) != null)
+    List<string> lines = Helper.ReadAllLines(inputFile);
+    foreach (string line in lines)
     {
         List<int> report = line.Split().Select(x => int.Parse(x)).ToList();
 
