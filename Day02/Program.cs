@@ -11,26 +11,25 @@ ReadFile(inputFile);
 static void ReadFile(StreamReader inputFile)
 {
     string? line;
-    var safeCountOne = 0;
-    var safeCountTwo = 0;
+    int[] safeCount = [0, 0];
     while ((line = inputFile.ReadLine()) != null)
     {
         List<int> report = line.Split().Select(x => int.Parse(x)).ToList();
 
-        bool safeOne = PartOne(report);
-        bool safeTwo;
+        bool[] safe = new bool[2];
+        safe[0] = PartOne(report);
 
-        if (safeOne)
-            safeTwo = true;
+        if (safe[0])
+            safe[1] = true;
         else
-            safeTwo = PartTwo(report);
+            safe[1] = PartTwo(report);
 
-        if (safeOne) safeCountOne++;
-        if (safeTwo) safeCountTwo++;
+        if (safe[0]) safeCount[0]++;
+        if (safe[1]) safeCount[1]++;
     }
 
-    Console.WriteLine("Part 1: {0}", safeCountOne);
-    Console.WriteLine("Part 1: {0}", safeCountTwo);
+    Console.WriteLine("Part 1: {0}", safeCount[0]);
+    Console.WriteLine("Part 1: {0}", safeCount[1]);
 }
 
 static bool PartOne(List<int> report)
