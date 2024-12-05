@@ -1,26 +1,22 @@
 ﻿using System.Text.RegularExpressions;
 
 var sampleFile1 = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open));
-Console.WriteLine("Sample 1 Solution:");
-ReadFile(sampleFile1);
-
-Console.WriteLine();
-
 var sampleFile2 = new StreamReader(new FileStream("./input/sample2.txt", FileMode.Open));
-Console.WriteLine("Sample 2 Solution:");
-ReadFile(sampleFile2);
+Console.WriteLine("Sample Solution:");
+ReadFile(sampleFile1, sampleFile2);
 
 Console.WriteLine();
 
 var inputFile = new StreamReader(new FileStream("./input/input.txt", FileMode.Open));
 Console.WriteLine("Final Solution:");
-ReadFile(inputFile);
+ReadFile(inputFile, inputFile);
 
-static void ReadFile(StreamReader inputFile)
+static void ReadFile(StreamReader partOneInput, StreamReader partTwoInput)
 {
-    string contents = inputFile.ReadToEnd();
-    int solutionOne = PartOne(contents);
-    int solutionTwo = PartTwo(contents);
+    int solutionOne = PartOne(partOneInput.ReadToEnd());
+    partTwoInput.DiscardBufferedData();
+    partTwoInput.BaseStream.Seek(0, SeekOrigin.Begin);
+    int solutionTwo = PartTwo(partTwoInput.ReadToEnd());
 
     Console.WriteLine("Part 1: {0}", solutionOne);
     Console.WriteLine("Part 2: {0}", solutionTwo);
