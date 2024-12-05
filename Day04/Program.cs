@@ -14,14 +14,23 @@ static void ReadFile(StreamReader inputFile)
 {
     List<List<char>> wordSearch = GetWordSearch(inputFile);
     var countOne = PartOne(wordSearch);
+    var countTwo = PartTwo(wordSearch);
 
     Console.WriteLine("Part 1: {0}", countOne);
+    Console.WriteLine("Part 2: {0}", countTwo);
 }
 
 static int PartOne(List<List<char>> wordSearch)
 {
     var count = 0;
     count += CountAllDirections(wordSearch, "XMAS");
+    return count;
+}
+
+static int PartTwo(List<List<char>> wordSearch)
+{
+    var count = 0;
+    count += CountX(wordSearch);
     return count;
 }
 
@@ -96,5 +105,22 @@ static int CountAllDirections(List<List<char>> wordSearch, string word)
             if (word.Equals(downLeft))
                 count++;
         }
+    return count;
+}
+
+static int CountX(List<List<char>> wordSearch)
+{
+    var count = 0;
+    for (int i = 1; i < wordSearch.Count - 1; i++)
+        for (int j = 1; j < wordSearch[i].Count - 1; j++)
+        {
+            if (!wordSearch[i][j].Equals('A'))
+                continue;
+
+            if ((wordSearch[i - 1][j - 1].Equals('M') && wordSearch[i + 1][j + 1].Equals('S')) || (wordSearch[i - 1][j - 1].Equals('S') && wordSearch[i + 1][j + 1].Equals('M')))
+                if ((wordSearch[i + 1][j - 1].Equals('M') && wordSearch[i - 1][j + 1].Equals('S')) || (wordSearch[i + 1][j - 1].Equals('S') && wordSearch[i - 1][j + 1].Equals('M')))
+                    count++;
+        }
+
     return count;
 }
