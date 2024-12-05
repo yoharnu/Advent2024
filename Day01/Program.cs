@@ -25,8 +25,8 @@ static int PartTwo(List<int> listA, List<int> listB)
     var mapB = listB.Distinct().ToDictionary(x => x, x => listB.Count(y => y == x));
     foreach (int a in listA)
     {
-        if (mapB.ContainsKey(a))
-            sum += a * mapB[a];
+        if (mapB.TryGetValue(a, out int value))
+            sum += a * value;
     }
     return sum;
 }
