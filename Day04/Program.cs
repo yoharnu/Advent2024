@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open));
+﻿var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open));
 Console.WriteLine("Sample Solution:");
 ReadFile(sampleFile);
 
