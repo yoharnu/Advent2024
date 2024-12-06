@@ -27,7 +27,7 @@ static int PartOne(Map map)
         }
         map.Guard.TurnRight();
     }
-    return map.Guard.DistinctLocations.Count();
+    return map.Guard.LocationHistory.Distinct().Count();
 }
 
 static Map GetMap(StreamReader inputFile)
