@@ -28,15 +28,7 @@ public class Map
 
     public bool CanGuardMove()
     {
-        if (IsGuardOutOfBounds()) return false;
-
-        var nextLocation = Guard.NextLocation();
-        foreach (var location in ObstacleLocations)
-        {
-            if (location == nextLocation) return false;
-        }
-
-        return true;
+        return !IsGuardOutOfBounds() && !ObstacleLocations.Contains(Guard.NextLocation());
     }
 
     public bool IsGuardOutOfBounds()
