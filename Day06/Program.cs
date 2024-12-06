@@ -19,7 +19,15 @@ static void ReadFile(StreamReader inputFile)
 
 static int PartOne(Map map)
 {
-    return 0;
+    while (!map.IsGuardOutOfBounds())
+    {
+        while (map.CanGuardMove())
+        {
+            map.MoveGuard();
+        }
+        map.Guard.TurnRight();
+    }
+    return map.Guard.DistinctLocations.Count();
 }
 
 static Map GetMap(StreamReader inputFile)

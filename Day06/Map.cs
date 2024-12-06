@@ -25,11 +25,36 @@ public class Map
         if (Guard == null)
             throw new InvalidDataException();
     }
-    public bool GuardCanMove()
+
+    public bool CanGuardMove()
     {
-        if (ObstacleLocations.Contains(Guard.NextLocation()))
-            return false;
+        if (IsGuardOutOfBounds()) return false;
+
+        var nextLocation = Guard.NextLocation();
+        foreach (var location in ObstacleLocations)
+        {
+            if (location[0] == nextLocation[0] && location[1] == nextLocation[1]) return false;
+        }
 
         return true;
+    }
+
+    public bool IsGuardOutOfBounds()
+    {
+        var y = Raw.Count - 1;
+        var x = Raw[y].Count - 1;
+        if (Guard.Location[0] > y || Guard.Location[1] > x || Guard.Location[0] < 0 || Guard.Location[1] < 0)
+            return true;
+
+        return false;
+    }
+
+    public void MoveGuard()
+    {
+        if (CanGuardMove())
+        {
+            Guard.LocationHistory.Add(Guard.Location);
+            Guard.Location = Guard.NextLocation();
+        }
     }
 }
