@@ -1,20 +1,20 @@
 ﻿namespace Day06;
 public class Guard
 {
-    public int[] Location { get; set; } = [];
+    public (int, int) Location { get; set; }
     public char Direction { get; set; }
-    public List<int[]> LocationHistory { get; set; } = [];
-    public List<int[]> DistinctLocations
+    public List<(int, int)> LocationHistory { get; set; } = [];
+    public List<(int, int)> DistinctLocations
     {
         get
         {
-            var locationHistoryDistinct = new List<int[]>();
+            var locationHistoryDistinct = new List<(int, int)>();
             foreach (var location in LocationHistory)
             {
                 bool exists = false;
                 foreach (var history in locationHistoryDistinct)
                 {
-                    if (history[0] == location[0] && history[1] == location[1])
+                    if (history == location)
                     {
                         exists = true;
                         break;
@@ -27,15 +27,15 @@ public class Guard
             return locationHistoryDistinct;
         }
     }
-    public int[] NextLocation()
+    public (int, int) NextLocation()
     {
         return Direction switch
         {
-            '^' => [Location[0] - 1, Location[1]],
-            'V' => [Location[0] + 1, Location[1]],
-            '<' => [Location[0], Location[1] - 1],
-            '>' => [Location[0], Location[1] + 1],
-            _ => [],
+            '^' => (Location.Item1 - 1, Location.Item2),
+            'V' => (Location.Item1 + 1, Location.Item2),
+            '<' => (Location.Item1, Location.Item2 - 1),
+            '>' => (Location.Item1, Location.Item2 + 1),
+            _ => throw new InvalidOperationException()
         };
     }
     public void TurnRight()

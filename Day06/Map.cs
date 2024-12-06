@@ -2,7 +2,7 @@
 public class Map
 {
     protected List<List<char>> Raw { get; set; }
-    public List<int[]> ObstacleLocations { get; set; } = [];
+    public List<(int, int)> ObstacleLocations { get; set; } = [];
     public Guard Guard { get; set; }
     public Map(List<List<char>> map)
     {
@@ -14,11 +14,11 @@ public class Map
             {
                 if (map[i][j] == '#')
                 {
-                    ObstacleLocations.Add([i, j]);
+                    ObstacleLocations.Add((i, j));
                 }
                 if (guard.Contains(map[i][j]))
                 {
-                    Guard = new Guard { Direction = map[i][j], Location = [i, j] };
+                    Guard = new Guard { Direction = map[i][j], Location = (i, j) };
                 }
             }
         }
@@ -33,7 +33,7 @@ public class Map
         var nextLocation = Guard.NextLocation();
         foreach (var location in ObstacleLocations)
         {
-            if (location[0] == nextLocation[0] && location[1] == nextLocation[1]) return false;
+            if (location == nextLocation) return false;
         }
 
         return true;
@@ -43,7 +43,7 @@ public class Map
     {
         var y = Raw.Count - 1;
         var x = Raw[y].Count - 1;
-        if (Guard.Location[0] > y || Guard.Location[1] > x || Guard.Location[0] < 0 || Guard.Location[1] < 0)
+        if (Guard.Location.Item1 > y || Guard.Location.Item2 > x || Guard.Location.Item1 < 0 || Guard.Location.Item2 < 0)
             return true;
 
         return false;
