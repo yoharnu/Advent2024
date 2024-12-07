@@ -33,10 +33,14 @@ public class Map
 
     public bool IsGuardOutOfBounds()
     {
-        var y = Raw.Count - 1;
-        var x = Raw[y].Count - 1;
-        if (Guard.Location.Item1 > y || Guard.Location.Item2 > x || Guard.Location.Item1 < 0 || Guard.Location.Item2 < 0)
-            return true;
+        return IsOutOfBounds(Guard.CurrentLocation.Coordinates.Item1, Guard.CurrentLocation.Coordinates.Item2);
+    }
+
+    public bool IsOutOfBounds(int y, int x)
+    {
+        var boundsY = Raw.Count - 1;
+        var boundsX = Raw[boundsY].Count - 1;
+        if (x > boundsX || x < 0 || y > boundsY || y < 0) return true;
 
         return false;
     }
@@ -45,7 +49,16 @@ public class Map
     {
         if (CanGuardMove())
         {
-            Guard.Location = Guard.NextLocation();
+            var nextLocation = Guard.NextLocation();
+            if (!IsOutOfBounds(nextLocation.Item1, nextLocation.Item2))
+                Guard.UpdateCurrentCoordinates(nextLocation.Item1, nextLocation.Item2);
+            else
+                Guard.CurrentLocation.Coordinates = nextLocation;
         }
+        }
+
+    public Map Clone()
+    {
+        return new Map(Raw);
     }
 }
