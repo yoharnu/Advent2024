@@ -18,7 +18,7 @@ public class Map
                 }
                 if (guard.Contains(map[i][j]))
                 {
-                    Guard = new Guard { Direction = map[i][j], Location = (i, j) };
+                    Guard = new Guard((i, j), map[i][j]);
                 }
             }
         }
@@ -45,7 +45,6 @@ public class Map
     {
         if (CanGuardMove())
         {
-            Guard.LocationHistory.Add(Guard.Location);
             Guard.Location = Guard.NextLocation();
         }
     }

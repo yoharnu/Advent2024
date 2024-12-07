@@ -1,9 +1,23 @@
 ﻿namespace Day06;
-public class Guard
+public class Guard((int, int) location, char direction)
 {
-    public (int, int) Location { get; set; }
-    public char Direction { get; set; }
-    public List<(int, int)> LocationHistory { get; set; } = [];
+    private (int, int) location = location;
+
+    public (int, int) Location
+    {
+        get
+        {
+            return location;
+        }
+
+        set
+        {
+            LocationHistory.Add(location);
+            location = value;
+        }
+    }
+    public char Direction { get; set; } = direction;
+    public List<(int, int)> LocationHistory { get; } = [];
     public (int, int) NextLocation()
     {
         return Direction switch
