@@ -1,6 +1,9 @@
-﻿namespace Day06;
+﻿using System.Data.Common;
+
+namespace Day06;
 public class Map
 {
+    public enum ObjectType { Guard, Obstacle, Nothing };
     protected List<List<char>> Raw { get; set; }
     public List<(int, int)> ObstacleLocations { get; set; } = [];
     public Guard Guard { get; set; }
@@ -26,6 +29,19 @@ public class Map
             throw new InvalidDataException();
     }
 
+    public ObjectType GetAtLocation(int y, int x)
+    {
+        return Raw[y][x] switch
+        {
+            '.' => ObjectType.Nothing,
+            '#' => ObjectType.Obstacle,
+            _ => ObjectType.Guard
+        };
+    }
+
+    public int Width => Raw[0].Count;
+    public int Height => Raw.Count;
+
     public bool CanGuardMove()
     {
         return !IsGuardOutOfBounds() && !ObstacleLocations.Contains(Guard.NextLocation());
@@ -47,15 +63,29 @@ public class Map
 
     public void MoveGuard()
     {
-        if (CanGuardMove())
+        if (CanGuardMove() && !IsGuardOutOfBounds())
         {
             var nextLocation = Guard.NextLocation();
-            if (!IsOutOfBounds(nextLocation.Item1, nextLocation.Item2))
-                Guard.UpdateCurrentCoordinates(nextLocation.Item1, nextLocation.Item2);
-            else
-                Guard.CurrentLocation.Coordinates = nextLocation;
+            Guard.UpdateCurrentCoordinates(nextLocation.Item1, nextLocation.Item2);
         }
+    }
+
+    public List<Guard.Location> GuardPath
+    {
+        get
+        {
+            var newMap = this.Clone();
+            while (!newMap.IsGuardOutOfBounds())
+            {
+                while (newMap.CanGuardMove())
+                {
+                    newMap.MoveGuard();
+                }
+                newMap.Guard.TurnRight();
+            }
+            return newMap.Guard.LocationHistory;
         }
+    }
 
     public Map Clone()
     {

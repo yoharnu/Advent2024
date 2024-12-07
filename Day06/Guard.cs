@@ -7,7 +7,7 @@ public class Guard((int, int) location, char direction)
         public char Direction { get; set; }
 
         public Location Clone()
-    {
+        {
             return new Location { Direction = Direction, Coordinates = Coordinates };
         }
 
@@ -62,5 +62,10 @@ public class Guard((int, int) location, char direction)
             '>' => 'V',
             _ => throw new InvalidOperationException()
         });
+    }
+
+    public bool IsStuck()
+    {
+        return LocationHistory.Contains(CurrentLocation);
     }
 }
