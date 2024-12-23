@@ -45,7 +45,9 @@ public class Grid : IEnumerable<Grid.Location>
     /// </summary>
     public struct Location
     {
-        public (int, int) Coordinates { get; set; }
+        private (int, int) Coordinates { get; set; }
+        public int X => Coordinates.Item1;
+        public int Y => Coordinates.Item2;
         public char Value { get; set; }
 
         /// <summary>
@@ -176,6 +178,11 @@ public class Grid : IEnumerable<Grid.Location>
     public bool IsOutOfBounds(int x, int y)
     {
         return x < 0 || x >= Width || y < 0 || y >= Height;
+    }
+
+    public bool IsOutOfBounds(Location location)
+    {
+        return IsOutOfBounds(location.X, location.Y);
     }
 
     /// <summary>
