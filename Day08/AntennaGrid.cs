@@ -2,23 +2,23 @@
 
 namespace Day08;
 
-public class FrequencyGrid : Grid
+public class AntennaGrid : Grid
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="FrequencyGrid"/> class with the specified grid and optional blank space character.
+    /// Initializes a new instance of the <see cref="AntennaGrid"/> class with the specified grid and optional blank space character.
     /// </summary>
     /// <param name="grid">The grid of characters.</param>
     /// <param name="blankSpace">The character to be treated as a blank space. Default is ' '.</param>
-    public FrequencyGrid(List<List<char>> grid, char blankSpace = ' ') : base(grid, blankSpace)
+    public AntennaGrid(List<List<char>> grid, char blankSpace = ' ') : base(grid, blankSpace)
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FrequencyGrid"/> class with the specified grid and optional blank space character.
+    /// Initializes a new instance of the <see cref="AntennaGrid"/> class with the specified grid and optional blank space character.
     /// </summary>
     /// <param name="grid">The list of strings representing the grid.</param>
     /// <param name="blankSpace">The character to be treated as a blank space. Default is ' '.</param>
-    public FrequencyGrid(List<string> grid, char blankSpace = ' ') : base(ConvertToCharGrid(grid), blankSpace)
+    public AntennaGrid(List<string> grid, char blankSpace = ' ') : base(ConvertToCharGrid(grid), blankSpace)
     {
     }
 
