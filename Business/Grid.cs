@@ -145,6 +145,26 @@ public class Grid : IEnumerable<Grid.Location>
         {
             return !(left == right);
         }
+
+        public static bool operator <(Location left, Location right)
+        {
+            return left.Coordinates.CompareTo(right.Coordinates) < 0;
+        }
+
+        public static bool operator >(Location left, Location right)
+        {
+            return left.Coordinates.CompareTo(right.Coordinates) > 0;
+        }
+
+        public static bool operator <=(Location left, Location right)
+        {
+            return left.Coordinates.CompareTo(right.Coordinates) <= 0;
+        }
+
+        public static bool operator >=(Location left, Location right)
+        {
+            return left.Coordinates.CompareTo(right.Coordinates) >= 0;
+        }
     }
 
     /// <summary>
