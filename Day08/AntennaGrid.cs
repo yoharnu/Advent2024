@@ -18,16 +18,9 @@ public class AntennaGrid : Grid
     /// </summary>
     /// <param name="grid">The list of strings representing the grid.</param>
     /// <param name="blankSpace">The character to be treated as a blank space. Default is ' '.</param>
-    public AntennaGrid(List<string> grid, char blankSpace = ' ') : base(ConvertToCharGrid(grid), blankSpace)
+    public AntennaGrid(List<string> grid, char blankSpace = ' ') : base(grid, blankSpace)
     {
     }
-
-    /// <summary>
-    /// Converts a list of strings to a list of list of characters.
-    /// </summary>
-    /// <param name="grid">The list of strings representing the grid.</param>
-    /// <returns>A list of list of characters representing the grid.</returns>
-    private static List<List<char>> ConvertToCharGrid(List<string> grid) => grid.Select(row => row.ToList()).ToList();
 
     public IEnumerable<Location> FindAntiNodes(Location a, Location b)
     {

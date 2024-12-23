@@ -40,6 +40,12 @@ public class Grid : IEnumerable<Grid.Location>
         }
     }
 
+    public Grid(List<string> grid, char blankSpace = ' ') : this(ConvertToCharGrid(grid), blankSpace)
+    {
+    }
+
+    private static List<List<char>> ConvertToCharGrid(List<string> grid) => grid.Select(row => row.ToList()).ToList();
+
     /// <summary>
     /// Represents a location within the grid.
     /// </summary>
