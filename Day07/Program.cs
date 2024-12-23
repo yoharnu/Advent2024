@@ -41,12 +41,6 @@ static long PartOne(List<string> lines)
 
 static bool FindSolution(List<long> values, long givenSolution)
 {
-    char[] operators = ['*', '+'];
-    List<long> potentialSolutions = [(values.Count - 1) ^ operators.Length];
-    List<List<char>> operatorCombinations = [];
-    // num operators slots = values.count-1
-    // num potential solutions = slots^operators.count
-    // current slot = slot number * operator number
     Equation equation = new(values);
     long x = equation.Calculate();
 
@@ -71,5 +65,5 @@ static (long, List<long>) ParseLine(string line)
     if (values.Length > 0)
         values[0] = values[0].Replace(":", "");
     var valueList = values.Select(x => long.Parse(x)).ToList();
-    return (valueList.First(), valueList[1..valueList.Count]);
+    return (valueList.First(), valueList.Skip(1).ToList());
 }
