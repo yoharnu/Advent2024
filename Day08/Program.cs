@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Business;
+using Day08;
 
 Console.WriteLine("Sample Solution:");
 using (var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open)))
@@ -25,7 +26,24 @@ static void ReadFile(StreamReader inputFile)
     Console.WriteLine("Part 1: {0}\t(completed in {1}s)", solutionOne, stopwatch.Elapsed.TotalSeconds);
 }
 
-static long PartOne(List<string> lines)
+static int PartOne(List<string> lines)
 {
-    return 0;
+    var grid = new AntennaGrid(lines, '.');
+    var distinct = grid.GetDistinctValues();
+    List<Grid.Location> antinodes = new List<Grid.Location>();
+    foreach (var value in distinct)
+    {
+        var allValues = grid.FindLocationsWithValue(value);
+        foreach (var location1 in allValues)
+        {
+            foreach (var location2 in allValues)
+            {
+                if (location1 == location2)
+                    continue;
+                antinodes.AddRange(grid.FindAntiNodes(location1, location2));
+            }
+        }
+    }
+    Console.WriteLine(string.Join(", ", antinodes.Distinct().Select(x => (x.X, x.Y))));
+    return antinodes.Distinct().Count();
 }

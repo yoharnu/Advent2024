@@ -28,4 +28,32 @@ public class AntennaGrid : Grid
     /// <param name="grid">The list of strings representing the grid.</param>
     /// <returns>A list of list of characters representing the grid.</returns>
     private static List<List<char>> ConvertToCharGrid(List<string> grid) => grid.Select(row => row.ToList()).ToList();
+
+    public IEnumerable<Location> FindAntiNodes(Location a, Location b)
+    {
+        if (a == b)
+            return [];
+
+        var xDistance = a.X - b.X;
+        var yDistance = a.Y - b.Y;
+
+        var antinodes = new List<Location>(2);
+
+        int newX = a.X + xDistance;
+        int newY = a.Y + yDistance;
+        var antinode = new Location(newX, newY, BlankSpace);
+        if (!IsOutOfBounds(antinode))
+            antinodes.Add(antinode);
+
+        xDistance = b.X - a.X;
+        yDistance = b.Y - a.Y;
+
+        newX = b.X + xDistance;
+        newY = b.Y + yDistance;
+        antinode = new Location(newX, newY, BlankSpace);
+        if (!IsOutOfBounds(antinode))
+            antinodes.Add(antinode);
+
+        return antinodes;
+    }
 }
