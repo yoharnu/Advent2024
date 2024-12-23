@@ -1,9 +1,11 @@
-﻿namespace Business;
+﻿using System.Collections;
+
+namespace Business;
 
 /// <summary>
 /// Represents a grid of characters.
 /// </summary>
-public class Grid
+public class Grid : IEnumerable<Grid.Location>
 {
     private readonly char[] _raw;
     public int Width { get; }
@@ -208,5 +210,29 @@ public class Grid
         _raw = raw;
         Width = width;
         Height = height;
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the grid.
+    /// </summary>
+    /// <returns>An enumerator that can be used to iterate through the grid.</returns>
+    public IEnumerator<Location> GetEnumerator()
+    {
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                yield return new Location(x, y, _raw[y * Width + x]);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the grid.
+    /// </summary>
+    /// <returns>An enumerator that can be used to iterate through the grid.</returns>
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
