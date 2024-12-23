@@ -21,7 +21,11 @@ public class FrequencyGrid : Grid
         {
             for (int x = 0; x < Width; x++)
             {
-                distinctValues.Add(GetValueAt(x, y));
+                char value = GetValueAt(x, y);
+                if (value != '.')
+                {
+                    distinctValues.Add(value);
+                }
             }
         }
         return distinctValues.ToList();
