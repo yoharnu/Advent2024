@@ -170,17 +170,25 @@ public class Grid : IEnumerable<Grid.Location>
     /// <returns>A list of locations with the specified value.</returns>
     public List<Location> FindLocationsWithValue(char value)
     {
+        // Initialize a list to store the locations with the specified value
         var locations = new List<Location>();
-        for (int y = 0; y < Height; y++)
+
+        // Iterate through the raw grid data
+        for (int i = 0; i < _raw.Length; i++)
         {
-            for (int x = 0; x < Width; x++)
+            // Check if the current character matches the specified value
+            if (_raw[i] == value)
             {
-                if (_raw[y * Width + x] == value)
-                {
-                    locations.Add(new Location(x, y, value));
-                }
+                // Calculate the x and y coordinates from the index
+                int x = i % Width;
+                int y = i / Width;
+
+                // Add the location to the list
+                locations.Add(new Location(x, y, value));
             }
         }
+
+        // Return the list of locations
         return locations;
     }
 
@@ -222,12 +230,15 @@ public class Grid : IEnumerable<Grid.Location>
     /// <returns>An enumerator that can be used to iterate through the grid.</returns>
     public IEnumerator<Location> GetEnumerator()
     {
-        for (int y = 0; y < Height; y++)
+        // Iterate through each element in the raw grid data
+        for (int i = 0; i < _raw.Length; i++)
         {
-            for (int x = 0; x < Width; x++)
-            {
-                yield return new Location(x, y, _raw[y * Width + x]);
-            }
+            // Calculate the x and y coordinates from the index
+            int x = i % Width;
+            int y = i / Width;
+
+            // Yield return a new Location instance with the calculated coordinates and value
+            yield return new Location(x, y, _raw[i]);
         }
     }
 
