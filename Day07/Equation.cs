@@ -5,7 +5,7 @@ namespace Day07;
 public class Equation
 {
     public List<long> Values;
-    public List<string> Slots = new();
+    public List<string> Slots = [];
     private readonly string[] operators;
 
     public Equation(List<long> values, string[] operators)
@@ -31,7 +31,7 @@ public class Equation
         }
     }
 
-    private static long DoOperation(long v1, long v2, string op)
+    protected static long DoOperation(long v1, long v2, string op)
     {
         return op switch
         {
