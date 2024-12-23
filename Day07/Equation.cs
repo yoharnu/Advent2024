@@ -5,8 +5,8 @@ namespace Day07;
 public class Equation
 {
     public List<long> Values;
-    public List<char> Slots = [];
-    private static readonly char[] operators = ['*', '+'];
+    public List<string> Slots = new();
+    private static readonly string[] operators = { "*", "+" };
 
     public Equation(List<long> values)
     {
@@ -17,14 +17,12 @@ public class Equation
         }
     }
 
-    private static long DoOperation(long v1, long v2, char op)
+    private static long DoOperation(long v1, long v2, string op)
     {
         return op switch
         {
-            '*' => v1 * v2,
-            '+' => v1 + v2,
-            '-' => v1 - v2,
-            '/' => v2 != 0 ? v1 / v2 : throw new DivideByZeroException(),
+            "*" => v1 * v2,
+            "+" => v1 + v2,
             _ => throw new InvalidOperationException($"Unsupported operator: {op}"),
         };
     }
@@ -55,7 +53,7 @@ public class Equation
         NextOperatorSet(Slots);
     }
 
-    public static void NextOperatorSet(List<char> slots)
+    public static void NextOperatorSet(List<string> slots)
     {
         for (int i = 0; i < slots.Count; i++)
         {
