@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using Business;
+using Day07;
+using System.Diagnostics;
 
 Console.WriteLine("Sample Solution:");
 using (var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open)))
@@ -12,13 +14,62 @@ using (var inputFile = new StreamReader(new FileStream("./input/input.txt", File
 
 static void ReadFile(StreamReader inputFile)
 {
+    Console.Write("Reading input...");
     long startTime = Stopwatch.GetTimestamp();
-    int solutionOne = PartOne();
+    var lines = Helper.ReadAllLines(inputFile);
     TimeSpan elapsedTime = Stopwatch.GetElapsedTime(startTime);
+    Console.WriteLine(" Done in {0} seconds", elapsedTime.TotalSeconds);
+
+    startTime = Stopwatch.GetTimestamp();
+    long solutionOne = PartOne(lines);
+    elapsedTime = Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine("Part 1: {0}\t(completed in {1}s)", solutionOne, elapsedTime.TotalSeconds);
 }
 
-static int PartOne()
+static long PartOne(List<string> lines)
 {
-    return 0;
+    long sum = 0;
+    for (int i = 0; i < lines.Count; i++)
+    {
+        Debug.WriteLine("Calculating line {0} of {1}...", i + 1, lines.Count);
+        (var solution, var values) = ParseLine(lines[i]);
+        bool found = FindSolution(values, solution);
+        if (found) sum += solution;
+    }
+    return sum;
+}
+
+static bool FindSolution(List<long> values, long givenSolution)
+{
+    char[] operators = ['*', '+'];
+    List<long> potentialSolutions = [(values.Count - 1) ^ operators.Length];
+    List<List<char>> operatorCombinations = [];
+    // num operators slots = values.count-1
+    // num potential solutions = slots^operators.count
+    // current slot = slot number * operator number
+    Equation equation = new(values);
+    long x = equation.Calculate();
+
+    if (x == givenSolution)
+        return true;
+
+    while (equation.HasNext())
+    {
+        equation.Next();
+        x = equation.Calculate();
+        if (x == givenSolution) return true;
+    }
+
+    return false;
+}
+
+
+
+static (long, List<long>) ParseLine(string line)
+{
+    var values = line.Split(' ');
+    if (values.Length > 0)
+        values[0] = values[0].Replace(":", "");
+    var valueList = values.Select(x => long.Parse(x)).ToList();
+    return (valueList.First(), valueList[1..valueList.Count]);
 }
