@@ -24,6 +24,11 @@ static void ReadFile(StreamReader inputFile)
     long solutionOne = PartOne(lines);
     elapsedTime = Stopwatch.GetElapsedTime(startTime);
     Console.WriteLine("Part 1: {0}\t(completed in {1}s)", solutionOne, elapsedTime.TotalSeconds);
+
+    startTime = Stopwatch.GetTimestamp();
+    long solutionTwo = PartTwo(lines);
+    elapsedTime = Stopwatch.GetElapsedTime(startTime);
+    Console.WriteLine("Part 2: {0}\t(completed in {1}s)", solutionOne, elapsedTime.TotalSeconds);
 }
 
 static long PartOne(List<string> lines)
@@ -33,15 +38,28 @@ static long PartOne(List<string> lines)
     {
         Debug.WriteLine("Calculating line {0} of {1}...", i + 1, lines.Count);
         (var solution, var values) = ParseLine(lines[i]);
-        bool found = FindSolution(values, solution);
+        bool found = FindSolution(values, solution, ["*", "+"]);
         if (found) sum += solution;
     }
     return sum;
 }
 
-static bool FindSolution(List<long> values, long givenSolution)
+static long PartTwo(List<string> lines)
 {
-    Equation equation = new(values);
+    long sum = 0;
+    for (int i = 0; i < lines.Count; i++)
+    {
+        Debug.WriteLine("Calculating line {0} of {1}...", i + 1, lines.Count);
+        (var solution, var values) = ParseLine(lines[i]);
+        bool found = FindSolution(values, solution, ["*", "+", "||"]);
+        if (found) sum += solution;
+    }
+    return sum;
+}
+
+static bool FindSolution(List<long> values, long givenSolution, string[] operators)
+{
+    Equation equation = new(values, operators);
     long x = equation.Calculate();
 
     if (x == givenSolution)
@@ -56,8 +74,6 @@ static bool FindSolution(List<long> values, long givenSolution)
 
     return false;
 }
-
-
 
 static (long, List<long>) ParseLine(string line)
 {
