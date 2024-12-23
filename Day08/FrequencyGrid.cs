@@ -28,25 +28,4 @@ public class FrequencyGrid : Grid
     /// <param name="grid">The list of strings representing the grid.</param>
     /// <returns>A list of list of characters representing the grid.</returns>
     private static List<List<char>> ConvertToCharGrid(List<string> grid) => grid.Select(row => row.ToList()).ToList();
-
-    /// <summary>
-    /// Gets the distinct values from the grid, excluding the blank space character.
-    /// </summary>
-    /// <returns>A list of distinct characters present in the grid, excluding the blank space character.</returns>
-    public List<char> GetDistinctValues()
-    {
-        var distinctValues = new HashSet<char>();
-        for (int y = 0; y < Height; y++)
-        {
-            for (int x = 0; x < Width; x++)
-            {
-                char value = GetValueAt(x, y);
-                if (value != BlankSpace)
-                {
-                    distinctValues.Add(value);
-                }
-            }
-        }
-        return distinctValues.ToList();
-    }
 }

@@ -30,11 +30,12 @@ public class Grid : IEnumerable<Grid.Location>
         _raw = new char[Width * Height];
         BlankSpace = blankSpace;
 
+        int index = 0;
         for (int y = 0; y < Height; y++)
         {
             for (int x = 0; x < Width; x++)
             {
-                _raw[y * Width + x] = grid[y][x];
+                _raw[index++] = grid[y][x];
             }
         }
     }
@@ -64,13 +65,13 @@ public class Grid : IEnumerable<Grid.Location>
         /// </summary>
         /// <param name="other">The other location.</param>
         /// <returns>The Manhattan distance to the other location.</returns>
-        public int DistanceTo(Location other)
+        public readonly int DistanceTo(Location other)
         {
             return Math.Abs(Coordinates.Item1 - other.Coordinates.Item1) + Math.Abs(Coordinates.Item2 - other.Coordinates.Item2);
         }
 
         /// <inheritdoc/>
-        public override bool Equals(object? obj)
+        public readonly override bool Equals(object? obj)
         {
             if (obj is Location other)
             {
@@ -80,13 +81,13 @@ public class Grid : IEnumerable<Grid.Location>
         }
 
         /// <inheritdoc/>
-        public override int GetHashCode()
+        public override readonly int GetHashCode()
         {
             return Coordinates.GetHashCode();
         }
 
         /// <inheritdoc/>
-        public override string ToString()
+        public override readonly string ToString()
         {
             return $"Location: ({Coordinates.Item1}, {Coordinates.Item2}), Value: {Value}";
         }
@@ -115,25 +116,35 @@ public class Grid : IEnumerable<Grid.Location>
         /// Gets the neighboring location above.
         /// </summary>
         /// <returns>The neighboring location above.</returns>
-        public Location GetNeighborUp() => new Location(Coordinates.Item1, Coordinates.Item2 - 1, Value);
+        public readonly Location GetNeighborUp() => new Location(Coordinates.Item1, Coordinates.Item2 - 1, Value);
 
         /// <summary>
         /// Gets the neighboring location below.
         /// </summary>
         /// <returns>The neighboring location below.</returns>
-        public Location GetNeighborDown() => new Location(Coordinates.Item1, Coordinates.Item2 + 1, Value);
+        public readonly Location GetNeighborDown() => new Location(Coordinates.Item1, Coordinates.Item2 + 1, Value);
 
         /// <summary>
         /// Gets the neighboring location to the left.
         /// </summary>
         /// <returns>The neighboring location to the left.</returns>
-        public Location GetNeighborLeft() => new Location(Coordinates.Item1 - 1, Coordinates.Item2, Value);
+        public readonly Location GetNeighborLeft() => new Location(Coordinates.Item1 - 1, Coordinates.Item2, Value);
 
         /// <summary>
         /// Gets the neighboring location to the right.
         /// </summary>
         /// <returns>The neighboring location to the right.</returns>
-        public Location GetNeighborRight() => new Location(Coordinates.Item1 + 1, Coordinates.Item2, Value);
+        public readonly Location GetNeighborRight() => new Location(Coordinates.Item1 + 1, Coordinates.Item2, Value);
+
+        public static bool operator ==(Location left, Location right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(Location left, Location right)
+        {
+            return !(left == right);
+        }
     }
 
     /// <summary>
@@ -158,7 +169,7 @@ public class Grid : IEnumerable<Grid.Location>
     {
         if (IsOutOfBounds(x, y))
         {
-            throw new ArgumentOutOfRangeException("Coordinates are out of bounds.");
+            throw new ArgumentOutOfRangeException($"Coordinates ({x}, {y}) are out of bounds.");
         }
         return _raw[y * Width + x];
     }
@@ -222,6 +233,17 @@ public class Grid : IEnumerable<Grid.Location>
         Width = width;
         Height = height;
         BlankSpace = blankSpace;
+    }
+
+    /// <summary>
+    /// Gets the distinct values from the grid, excluding the blank space character.
+    /// </summary>
+    /// <returns>A list of distinct characters present in the grid, excluding the blank space character.</returns>
+    public List<char> GetDistinctValues()
+    {
+        var distinctValues = new HashSet<char>(_raw);
+        distinctValues.Remove(BlankSpace);
+        return distinctValues.ToList();
     }
 
     /// <summary>
