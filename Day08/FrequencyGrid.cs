@@ -4,15 +4,14 @@ namespace Day08;
 
 public class FrequencyGrid : Grid
 {
-    public FrequencyGrid(List<List<char>> grid) : base(grid)
+    public FrequencyGrid(List<List<char>> grid, char blankSpace = ' ') : base(grid, blankSpace)
     {
     }
-    public FrequencyGrid(List<string> grid) : base(ConvertToCharGrid(grid))
+    public FrequencyGrid(List<string> grid, char blankSpace = ' ') : base(ConvertToCharGrid(grid), blankSpace)
     {
     }
 
     private static List<List<char>> ConvertToCharGrid(List<string> grid) => grid.Select(row => row.ToList()).ToList();
-
 
     public List<char> GetDistinctValues()
     {
@@ -22,7 +21,7 @@ public class FrequencyGrid : Grid
             for (int x = 0; x < Width; x++)
             {
                 char value = GetValueAt(x, y);
-                if (value != '.')
+                if (value != BlankSpace)
                 {
                     distinctValues.Add(value);
                 }

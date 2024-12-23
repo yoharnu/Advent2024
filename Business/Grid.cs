@@ -10,13 +10,15 @@ public class Grid : IEnumerable<Grid.Location>
     private readonly char[] _raw;
     public int Width { get; }
     public int Height { get; }
+    public char BlankSpace { get; }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Grid"/> class with the specified grid.
+    /// Initializes a new instance of the <see cref="Grid"/> class with the specified grid and optional blank space character.
     /// </summary>
     /// <param name="grid">The grid of characters.</param>
+    /// <param name="blankSpace">The character to be treated as a blank space. Default is ' '.</param>
     /// <exception cref="ArgumentException">Thrown when the grid is null or empty.</exception>
-    public Grid(List<List<char>> grid)
+    public Grid(List<List<char>> grid, char blankSpace = ' ')
     {
         if (grid == null || grid.Count == 0 || grid[0].Count == 0)
         {
@@ -26,6 +28,7 @@ public class Grid : IEnumerable<Grid.Location>
         Height = grid.Count;
         Width = grid[0].Count;
         _raw = new char[Width * Height];
+        BlankSpace = blankSpace;
 
         for (int y = 0; y < Height; y++)
         {
@@ -201,15 +204,16 @@ public class Grid : IEnumerable<Grid.Location>
     {
         var newGrid = new char[_raw.Length];
         Array.Copy(_raw, newGrid, _raw.Length);
-        return new Grid(newGrid, Width, Height);
+        return new Grid(newGrid, Width, Height, BlankSpace);
     }
 
     // Private constructor for cloning
-    private Grid(char[] raw, int width, int height)
+    private Grid(char[] raw, int width, int height, char blankSpace)
     {
         _raw = raw;
         Width = width;
         Height = height;
+        BlankSpace = blankSpace;
     }
 
     /// <summary>
