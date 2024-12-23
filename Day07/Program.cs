@@ -28,7 +28,7 @@ static void ReadFile(StreamReader inputFile)
     startTime = Stopwatch.GetTimestamp();
     long solutionTwo = PartTwo(lines);
     elapsedTime = Stopwatch.GetElapsedTime(startTime);
-    Console.WriteLine("Part 2: {0}\t(completed in {1}s)", solutionOne, elapsedTime.TotalSeconds);
+    Console.WriteLine("Part 2: {0}\t(completed in {1}s)", solutionTwo, elapsedTime.TotalSeconds);
 }
 
 static long PartOne(List<string> lines)
