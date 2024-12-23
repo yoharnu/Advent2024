@@ -23,7 +23,9 @@ public class Equation
         {
             '*' => v1 * v2,
             '+' => v1 + v2,
-            _ => throw new InvalidOperationException(),
+            '-' => v1 - v2,
+            '/' => v2 != 0 ? v1 / v2 : throw new DivideByZeroException(),
+            _ => throw new InvalidOperationException($"Unsupported operator: {op}"),
         };
     }
 
