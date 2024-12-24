@@ -22,7 +22,7 @@ public class AntennaGrid : Grid
     {
     }
 
-    public IEnumerable<Location> FindAntiNodes(Location a, Location b)
+    public List<Location> FindAntiNodes(Location a, Location b)
     {
         if (a == b)
             return [];
@@ -48,5 +48,35 @@ public class AntennaGrid : Grid
             antinodes.Add(antinode);
 
         return antinodes;
+    }
+
+    public List<Location> FindAntiNodesLong(Location a, Location b)
+    {
+        var antinodes = FindAntiNodes(a, b);
+        if (antinodes.Count == 0)
+            return antinodes;
+
+        var result = new List<Location>(antinodes.Count * 3); // Preallocate with an estimated size
+
+        var stack = new Stack<(Location, Location)>();
+        stack.Push((a, b));
+
+        while (stack.Count > 0)
+        {
+            var (currentA, currentB) = stack.Pop();
+            var currentAntinodes = FindAntiNodes(currentA, currentB);
+
+            foreach (var antinode in currentAntinodes)
+            {
+                if (!result.Contains(antinode))
+                {
+                    result.Add(antinode);
+                    stack.Push((antinode, b));
+                    stack.Push((antinode, a));
+                }
+            }
+        }
+
+        return result.Where(x => x != a && x != b).ToList();
     }
 }
