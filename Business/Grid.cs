@@ -208,6 +208,22 @@ public class Grid : IEnumerable<Grid.Location>
     }
 
     /// <summary>
+    /// Sets the value at the specified coordinates.
+    /// </summary>
+    /// <param name="x">The x-coordinate.</param>
+    /// <param name="y">The y-coordinate.</param>
+    /// <param name="value">The value to set.</param>
+    /// <exception cref="ArgumentOutOfRangeException">Thrown when the coordinates are out of bounds.</exception>
+    public void SetValueAt(int x, int y, char value)
+    {
+        if (IsOutOfBounds(x, y))
+        {
+            throw new ArgumentOutOfRangeException($"Coordinates ({x}, {y}) are out of bounds.");
+        }
+        _raw[y * Width + x] = value;
+    }
+
+    /// <summary>
     /// Finds all locations with the specified value.
     /// </summary>
     /// <param name="value">The value to search for.</param>
