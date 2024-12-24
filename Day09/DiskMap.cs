@@ -58,7 +58,7 @@ public class DiskMap
         Console.WriteLine(sb.ToString());
     }
 
-    public void Defrag()
+    public void MoveFiles()
     {
         int fileCount = _decompressed.Count(x => x != -1);
         int lastIndex = _decompressed.Count - 1;

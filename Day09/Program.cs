@@ -29,6 +29,6 @@ static void ReadFile(StreamReader inputFile)
 
 static long PartOne(DiskMap map)
 {
-    map.Defrag();
+    map.MoveFiles();
     return map.Checksum();
 }
