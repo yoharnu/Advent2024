@@ -5,10 +5,16 @@ namespace Day09;
 public class DiskMap
 {
     private readonly string _diskmap;
+    private List<int> _compressed;
     private List<int> _decompressed;
     public DiskMap(string diskmap)
     {
         _diskmap = diskmap;
+        _compressed = new List<int>(_diskmap.Length);
+        foreach (char c in _diskmap)
+        {
+            _compressed.Add(int.Parse(c.ToString()));
+        }
         _decompressed = new List<int>(_diskmap.Length);
         Decompress();
     }
