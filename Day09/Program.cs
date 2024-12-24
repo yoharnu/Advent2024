@@ -24,10 +24,20 @@ static void ReadFile(StreamReader inputFile)
     long solutionOne = PartOne(new DiskMap(lines));
     stopwatch.Stop();
     Console.WriteLine("Part 1: {0}\t(completed in {1}s)", solutionOne, stopwatch.Elapsed.TotalSeconds);
+
+    stopwatch.Restart();
+    long solutionTwo = PartTwo(new DiskMap(lines));
+    stopwatch.Stop();
+    Console.WriteLine("Part 2: {0}\t(completed in {1}s)", solutionTwo, stopwatch.Elapsed.TotalSeconds);
 }
 
 static long PartOne(DiskMap map)
 {
     map.MoveFiles();
+    return map.Checksum();
+}
+
+static long PartTwo(DiskMap map)
+{
     return map.Checksum();
 }
