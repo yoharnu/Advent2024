@@ -66,8 +66,8 @@ public class AntennaGridTests
 
         // Assert
         Assert.NotEmpty(result);
-        Assert.DoesNotContain(result, loc => loc.X == 2 && loc.Y == 2);
-        Assert.DoesNotContain(result, loc => loc.X == 1 && loc.Y == 1);
+        Assert.Contains(result, loc => loc.X == 2 && loc.Y == 2);
+        Assert.Contains(result, loc => loc.X == 1 && loc.Y == 1);
         Assert.Contains(result, loc => loc.X == 0 && loc.Y == 0);
         Assert.Contains(result, loc => loc.X == 3 && loc.Y == 3);
         Assert.Contains(result, loc => loc.X == 4 && loc.Y == 4);

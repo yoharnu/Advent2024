@@ -52,11 +52,7 @@ public class AntennaGrid : Grid
 
     public List<Location> FindAntiNodesLong(Location a, Location b)
     {
-        var antinodes = FindAntiNodes(a, b);
-        if (antinodes.Count == 0)
-            return antinodes;
-
-        var result = new List<Location>(antinodes.Count * 3); // Preallocate with an estimated size
+        var result = new List<Location>();
 
         var stack = new Stack<(Location, Location)>();
         stack.Push((a, b));
@@ -77,7 +73,7 @@ public class AntennaGrid : Grid
             }
         }
 
-        return result.Where(x => x != a && x != b).ToList();
+        return result.ToList();
     }
     public void DisplayGridWithAntiNodes(List<Location> antinodes)
     {
@@ -97,5 +93,35 @@ public class AntennaGrid : Grid
         gridClone.Display();
     }
 
+    public void DisplayAntinodesOnly(List<Location> antinodes)
+    {
+        // create grid the same size as the original grid
+        var newGrid = new char[Height, Width];
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                newGrid[i, j] = BlankSpace;
+            }
+        }
 
+        // for each antinode, set the value in the new grid to '#'
+        foreach (var antinode in antinodes)
+        {
+            if (!IsOutOfBounds(antinode.X, antinode.Y))
+            {
+                newGrid[antinode.Y, antinode.X] = '#';
+            }
+        }
+
+        // display the new grid
+        for (int i = 0; i < Height; i++)
+        {
+            for (int j = 0; j < Width; j++)
+            {
+                Console.Write(newGrid[i, j]);
+            }
+            Console.WriteLine();
+        }
+    }
 }
