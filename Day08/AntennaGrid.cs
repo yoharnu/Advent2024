@@ -79,4 +79,23 @@ public class AntennaGrid : Grid
 
         return result.Where(x => x != a && x != b).ToList();
     }
+    public void DisplayGridWithAntiNodes(List<Location> antinodes)
+    {
+        var gridClone = Clone();
+
+        foreach (var antinode in antinodes)
+        {
+            if (gridClone.IsOutOfBounds(antinode.X, antinode.Y))
+                continue;
+
+            if (gridClone.GetValueAt(antinode.X, antinode.Y) == '.')
+            {
+                gridClone.SetValueAt(antinode.X, antinode.Y, '#');
+            }
+        }
+
+        gridClone.Display();
+    }
+
+
 }
