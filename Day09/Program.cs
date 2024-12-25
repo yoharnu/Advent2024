@@ -39,5 +39,6 @@ static long PartOne(DiskMap map)
 
 static long PartTwo(DiskMap map)
 {
+    map.Defrag();
     return map.Checksum();
 }
