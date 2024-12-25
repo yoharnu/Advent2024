@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using Business;
 using Day09;
 
 Console.WriteLine("Sample Solution:");
