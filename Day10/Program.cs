@@ -31,43 +31,63 @@ static long PartOne(Grid map)
     var peakSum = 0;
     foreach (var trailhead in trailheads)
     {
-        HashSet<Grid.Location> peaks = new HashSet<Grid.Location>();
-        var stack = new Stack<Grid.Location>();
-        stack.Push(trailhead);
-        while (stack.Count > 0)
-        {
-            var current = stack.Pop();
-
-            if (map.IsOutOfBounds(current))
-                continue;
-
-            var currentValue = int.Parse(current.Value.ToString());
-
-            if (currentValue == 9)
-            {
-                peaks.Add(current);
-            }
-            else
-            {
-                var neighbors = new List<Grid.Location> { current.GetNeighborDown(), current.GetNeighborUp(), current.GetNeighborLeft(), current.GetNeighborRight() };
-
-                for (int i = 0; i < neighbors.Count; i++)
-                {
-                    var neighbor = neighbors[i];
-
-                    if (map.IsOutOfBounds(neighbor)) continue;
-
-                    neighbor.Value = map.GetValueAt(neighbor.X, neighbor.Y);
-
-                    if (int.Parse(neighbor.Value.ToString()) == int.Parse(current.Value.ToString()) + 1)
-                    {
-                        stack.Push(neighbor);
-                    }
-                }
-            }
-        }
-
+        var peaks = FindPeaks(map, trailhead);
         peakSum += peaks.Count;
     }
     return peakSum;
+}
+
+static HashSet<Grid.Location> FindPeaks(Grid map, Grid.Location trailhead)
+{
+    var peaks = new HashSet<Grid.Location>();
+    var stack = new Stack<Grid.Location>();
+    stack.Push(trailhead);
+    while (stack.Count > 0)
+    {
+        var current = stack.Pop();
+
+        if (map.IsOutOfBounds(current))
+            continue;
+
+        var currentValue = int.Parse(current.Value.ToString());
+
+        if (currentValue == 9)
+        {
+            peaks.Add(current);
+        }
+        else
+        {
+            var neighbors = GetNeighbors(map, current);
+            foreach (var neighbor in neighbors)
+            {
+                if (int.Parse(neighbor.Value.ToString()) == currentValue + 1)
+                {
+                    stack.Push(neighbor);
+                }
+            }
+        }
+    }
+    return peaks;
+}
+
+static List<Grid.Location> GetNeighbors(Grid map, Grid.Location location)
+{
+    var neighbors = new List<Grid.Location>
+    {
+        location.GetNeighborDown(),
+        location.GetNeighborUp(),
+        location.GetNeighborLeft(),
+        location.GetNeighborRight()
+    };
+
+    neighbors.RemoveAll(neighbor => map.IsOutOfBounds(neighbor));
+
+    for (int i = 0; i < neighbors.Count; i++)
+    {
+        var neighbor = neighbors[i];
+        neighbor.Value = map.GetValueAt(neighbor.X, neighbor.Y);
+        neighbors[i] = neighbor;
+    }
+
+    return neighbors;
 }
