@@ -1,14 +1,13 @@
 ﻿using System.Diagnostics;
-using Business;
 
 Console.WriteLine("Sample Solution:");
-using (var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open)))
+using (var sampleFile = new StreamReader(new FileStream("./input/sample.txt", FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan)))
     ReadFile(sampleFile);
 
 Console.WriteLine();
 
 Console.WriteLine("Solution:");
-using (var inputFile = new StreamReader(new FileStream("./input/input.txt", FileMode.Open)))
+using (var inputFile = new StreamReader(new FileStream("./input/input.txt", FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.SequentialScan)))
     ReadFile(inputFile);
 
 static void ReadFile(StreamReader inputFile)
@@ -21,78 +20,86 @@ static void ReadFile(StreamReader inputFile)
         Console.WriteLine(" No input found.");
         return;
     }
-    var stones = line.Split(' ').Select(long.Parse).ToArray();
+    var stones = Array.ConvertAll(line.Split(' '), uint.Parse);
     stopwatch.Stop();
     Console.WriteLine(" Done in {0} seconds", stopwatch.Elapsed.TotalSeconds);
 
     stopwatch.Restart();
-    long solutionOne = PartOne(stones);
+    uint solutionOne = PartOne(stones);
     stopwatch.Stop();
     Console.WriteLine("Part 1: {0}\t(completed in {1}s)", solutionOne, stopwatch.Elapsed.TotalSeconds);
 
     stopwatch.Restart();
-    long solutionTwo = PartTwo(stones);
+    uint solutionTwo = PartTwo(stones);
     stopwatch.Stop();
     Console.WriteLine("Part 2: {0}\t(completed in {1}s)", solutionTwo, stopwatch.Elapsed.TotalSeconds);
 }
 
-static int PartOne(long[] stones)
+static uint PartOne(uint[] stones)
 {
     var stoneNumbers = Blink(stones, 25);
-    return stoneNumbers.Length;
+    return (uint)stoneNumbers.Length;
 }
 
-static int PartTwo(long[] stones)
+static uint PartTwo(uint[] stones)
 {
     var stoneNumbers = Blink(stones, 75);
-    return stoneNumbers.Length;
+    return (uint)stoneNumbers.Length;
 }
 
-static long[] Blink(long[] stones, int blinks)
+// blink the stones for the given number of times
+static uint[] Blink(uint[] stones, int blinks)
 {
-    var stoneNumbers = new List<long>(stones);
+    var stoneNumbers = stones;
     for (var i = 0; i < blinks; i++)
     {
-        var newStoneNumbers = new List<long>();
+        var newStoneNumbers = new uint[stoneNumbers.Length * 2];
+        var index = 0;
         foreach (var stone in stoneNumbers)
         {
-            newStoneNumbers.AddRange(NewStoneNumber(stone));
+            var newStones = NewStoneNumber(stone);
+            Array.Copy(newStones, 0, newStoneNumbers, index, newStones.Length);
+            index += newStones.Length;
         }
+        Array.Resize(ref newStoneNumbers, index);
         stoneNumbers = newStoneNumbers;
     }
-    return stoneNumbers.ToArray();
+    return stoneNumbers;
 }
 
-
-static long[] NewStoneNumber(long stone)
+// create new stone numbers based on the given stone
+static uint[] NewStoneNumber(uint stone)
 {
-    if (stone == 0) return [1];
+    if (stone == 0) return new uint[] { 1 };
 
     // if the number of digits in the stone is even, split the stone into two
-    if (isEven(GetLongDigits(stone)))
+    if (IsEven(GetUIntDigits(stone)))
     {
         return SplitStone(stone);
     }
 
-    return [stone * 2024];
+    return new uint[] { stone * 2024 };
 }
 
-static long[] SplitStone(long stone)
+// split the stone into two parts
+static uint[] SplitStone(uint stone)
 {
-    var midpoint = GetLongDigits(stone) / 2;
+    var midpoint = GetUIntDigits(stone) / 2;
 
-    var left = (long)Math.Truncate(stone / Math.Pow(10, midpoint));
-    var right = stone % (long)Math.Pow(10, midpoint);
+    var left = (uint)Math.Truncate(stone / Math.Pow(10, midpoint));
+    var right = stone % (uint)Math.Pow(10, midpoint);
 
-    return new long[] { left, right };
+    return new uint[] { left, right };
 }
 
-static int GetLongDigits(long number)
+// get the number of digits in the given number
+static int GetUIntDigits(uint number)
 {
     return number.ToString().Length;
 }
 
-static bool isEven(long number)
+// check if the given number is even
+static bool IsEven(int number)
 {
     return number % 2 == 0;
 }
