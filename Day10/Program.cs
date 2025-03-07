@@ -7,7 +7,7 @@ using (var sampleFile = new StreamReader(new FileStream("./input/sample.txt", Fi
 
 Console.WriteLine();
 
-Console.WriteLine("Final Solution:");
+Console.WriteLine("Solution:");
 using (var inputFile = new StreamReader(new FileStream("./input/input.txt", FileMode.Open)))
     ReadFile(inputFile);
 
@@ -23,6 +23,11 @@ static void ReadFile(StreamReader inputFile)
     long solutionOne = PartOne(map);
     stopwatch.Stop();
     Console.WriteLine("Part 1: {0}\t(completed in {1}s)", solutionOne, stopwatch.Elapsed.TotalSeconds);
+
+    stopwatch.Restart();
+    long solutionTwo = PartTwo(map);
+    stopwatch.Stop();
+    Console.WriteLine("Part 2: {0}\t(completed in {1}s)", solutionTwo, stopwatch.Elapsed.TotalSeconds);
 }
 
 static long PartOne(Grid map)
@@ -35,6 +40,18 @@ static long PartOne(Grid map)
         peakSum += peaks.Count;
     }
     return peakSum;
+}
+
+static long PartTwo(Grid map)
+{
+    var trailheads = map.FindLocationsWithValue('0');
+    long ratingSum = 0;
+    foreach (var trailhead in trailheads)
+    {
+        var rating = FindTrailheadRating(map, trailhead);
+        ratingSum += rating;
+    }
+    return ratingSum;
 }
 
 static HashSet<Grid.Location> FindPeaks(Grid map, Grid.Location trailhead)
@@ -68,6 +85,39 @@ static HashSet<Grid.Location> FindPeaks(Grid map, Grid.Location trailhead)
         }
     }
     return peaks;
+}
+
+static long FindTrailheadRating(Grid map, Grid.Location trailhead)
+{
+    long rating = 0;
+    var stack = new Stack<Grid.Location>();
+    stack.Push(trailhead);
+    while (stack.Count > 0)
+    {
+        var current = stack.Pop();
+
+        if (map.IsOutOfBounds(current))
+            continue;
+
+        var currentValue = int.Parse(current.Value.ToString());
+
+        if (currentValue == 9)
+        {
+            rating++;
+        }
+        else
+        {
+            var neighbors = GetNeighbors(map, current);
+            foreach (var neighbor in neighbors)
+            {
+                if (int.Parse(neighbor.Value.ToString()) == currentValue + 1)
+                {
+                    stack.Push(neighbor);
+                }
+            }
+        }
+    }
+    return rating;
 }
 
 static List<Grid.Location> GetNeighbors(Grid map, Grid.Location location)
