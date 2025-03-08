@@ -58,8 +58,8 @@ public class Grid : IEnumerable<Grid.Location>
     public struct Location(int x, int y, char value)
     {
         private (int, int) Coordinates { get; set; } = (x, y);
-        public int X => Coordinates.Item1;
-        public int Y => Coordinates.Item2;
+        public readonly int X => Coordinates.Item1;
+        public readonly int Y => Coordinates.Item2;
         public char Value { get; set; } = value;
 
         /// <summary>
