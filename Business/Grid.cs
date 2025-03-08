@@ -30,13 +30,9 @@ public class Grid : IEnumerable<Grid.Location>
         _raw = new char[Width * Height];
         BlankSpace = blankSpace;
 
-        int index = 0;
         for (int y = 0; y < Height; y++)
         {
-            for (int x = 0; x < Width; x++)
-            {
-                _raw[index++] = grid[y][x];
-            }
+            grid[y].CopyTo(_raw, y * Width);
         }
     }
 
