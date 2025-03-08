@@ -49,24 +49,18 @@ public class Grid : IEnumerable<Grid.Location>
     /// <summary>
     /// Represents a location within the grid.
     /// </summary>
-    public struct Location
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="Location"/> struct with the specified coordinates and value.
+    /// </remarks>
+    /// <param name="x">The x-coordinate.</param>
+    /// <param name="y">The y-coordinate.</param>
+    /// <param name="value">The value at the location.</param>
+    public struct Location(int x, int y, char value)
     {
-        private (int, int) Coordinates { get; set; }
+        private (int, int) Coordinates { get; set; } = (x, y);
         public int X => Coordinates.Item1;
         public int Y => Coordinates.Item2;
-        public char Value { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Location"/> struct with the specified coordinates and value.
-        /// </summary>
-        /// <param name="x">The x-coordinate.</param>
-        /// <param name="y">The y-coordinate.</param>
-        /// <param name="value">The value at the location.</param>
-        public Location(int x, int y, char value)
-        {
-            Coordinates = (x, y);
-            Value = value;
-        }
+        public char Value { get; set; } = value;
 
         /// <summary>
         /// Calculates the Manhattan distance to another location.
